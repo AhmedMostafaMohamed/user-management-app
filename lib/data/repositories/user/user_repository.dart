@@ -33,14 +33,12 @@ class UserRepository extends BaseUserRepository {
   }
 
   @override
-  EitherUser<Stream<List<User>>> getAllUsers() async {
+  EitherUser<List<User>> getAllUsers() async {
+    List<User> users = [];
     try {
-      return right(_firebaseFirestore
-          .collection('users')
-          .snapshots()
-          .map((querySnapshot) {
-        return querySnapshot.docs.map((doc) => User.fromSnapshot(doc)).toList();
-      }));
+      var snapshot = await _firebaseFirestore.collection('users').get();
+      users = snapshot.docs.map((doc) => User.fromSnapshot(doc)).toList();
+      return right(users);
     } catch (e) {
       return left(
           kDebugMode ? e.toString() : 'error occurred, please try again later');
@@ -53,7 +51,7 @@ class UserRepository extends BaseUserRepository {
       await _firebaseFirestore
           .collection('users')
           .doc(user.id)
-          .update({'user': user});
+          .update({'user': user.toMap()});
       return right(user);
     } catch (e) {
       return left(

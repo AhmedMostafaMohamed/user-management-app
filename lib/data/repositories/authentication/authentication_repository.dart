@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,40 +10,63 @@ import 'base_authentication_repository.dart';
 class AuthRepository extends BaseAuthRepository {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firebaseFirestore;
-  AuthRepository({FirebaseAuth? auth, FirebaseFirestore? firebaseFirestore})
-      : _auth = auth ?? FirebaseAuth.instance,
-        _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
+  final GoogleSignIn _googleSignIn;
+  AuthRepository({
+    GoogleSignIn? googleSignIn,
+    FirebaseAuth? auth,
+    FirebaseFirestore? firebaseFirestore,
+  })  : _auth = auth ?? FirebaseAuth.instance,
+        _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   @override
-  EitherUser<user_model.User> googleSignInUser() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    try {
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser != null) {
-        // Google sign-in successful
-        // Retrieve the Google sign-in authentication details
-        if (!_firebaseFirestore.doc(googleUser.id).isNull) {
-          var doc = await _firebaseFirestore.doc(googleUser.id).get();
-          user_model.User currentUser = user_model.User.fromSnapshot(doc);
-          return right(currentUser);
+  EitherUser<User> googleSignInUser() async {
+    if (kIsWeb) {
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
+      try {
+        final UserCredential userCredential =
+            await _auth.signInWithPopup(authProvider);
+        if (userCredential.user != null) {
+          return right(userCredential.user!);
         } else {
-          return left('user is not registered in the system');
+          return left('User is not found');
+        }
+      } catch (e) {
+        return left(kDebugMode
+            ? e.toString()
+            : 'error occurred, please try again later');
+      }
+    } else {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential authCredential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken);
+        try {
+          final UserCredential userCredential =
+              await _auth.signInWithCredential(authCredential);
+          if (userCredential.user != null) {
+            return right(userCredential.user!);
+          } else {
+            return left('User is not found');
+          }
+        } on FirebaseAuthException catch (e) {
+          return left(e.code);
         }
       } else {
-        // Google sign-in canceled by the user
-        return left('user cancelled authentication');
+        return left('error occurred, please try again later');
       }
-    } catch (e) {
-      return left(
-          kDebugMode ? e.toString() : 'error occurred, please try again later');
     }
   }
 
   @override
   EitherUser<String> signOutUser() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
-      googleSignIn.signOut();
+      _googleSignIn.signOut();
       _auth.signOut();
       return right('signed out successfully');
     } catch (e) {
