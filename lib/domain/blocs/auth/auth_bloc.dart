@@ -20,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _onSignInEvent(
       SignInEvent event, Emitter<AuthState> emit) async {
     try {
-      emit(LoadingState());
+      emit(LoadingAuthState());
       final response = await _authRepository.googleSignInUser();
       response.fold(
           (errorMessage) => emit(UserErrorState(

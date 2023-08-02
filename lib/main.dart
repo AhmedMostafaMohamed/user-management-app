@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:users_management/data/models/user.dart';
 import 'package:users_management/data/repositories/authentication/authentication_repository.dart';
 import 'package:users_management/data/repositories/user/user_repository.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AuthBloc(
-            authRepository: AuthRepository(),
+            authRepository: AuthRepository(googleSignIn: GoogleSignIn()),
           ),
         )
       ],

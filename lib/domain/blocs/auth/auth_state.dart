@@ -9,7 +9,7 @@ abstract class AuthState extends Equatable {
 
 class AuthInitial extends AuthState {}
 
-class LoadingState extends AuthState {}
+class LoadingAuthState extends AuthState {}
 
 class Authenticated extends AuthState {}
 

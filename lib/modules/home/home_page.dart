@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:users_management/domain/blocs/auth/auth_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
 
 import '../../data/models/user.dart' as user_model;
@@ -24,13 +25,29 @@ class HomePage extends StatelessWidget {
                 BlocProvider.of<UserBloc>(context).add(FetchUsersEvent());
               },
               icon: const Icon(Icons.refresh)),
-          CircleAvatar(
-            backgroundImage: photoURL != null ? NetworkImage(photoURL) : null,
-            radius: 25,
-            child: photoURL == null
-                ? Icon(Icons.person,
-                    size: 25) // Display a default icon if photoURL is null
-                : null,
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is Unauthenticated) {
+                Navigator.of(context).pushReplacementNamed('/');
+              }
+            },
+            child: IconButton(
+                tooltip: 'SignOut',
+                onPressed: () {
+                  BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
+                },
+                icon: const Icon(Icons.power_settings_new_outlined)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundImage: photoURL != null ? NetworkImage(photoURL) : null,
+              radius: 20,
+              child: photoURL == null
+                  ? const Icon(Icons.person,
+                      size: 20) // Display a default icon if photoURL is null
+                  : null,
+            ),
           )
         ],
       ),
