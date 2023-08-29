@@ -19,7 +19,12 @@ class User extends Equatable {
     this.id = '0',
   });
   factory User.empty() {
-    return const User(email: '', role: Role.user, systemAccess: {});
+    return const User(email: '', role: Role.user, systemAccess: {
+      'Expense management': false,
+      'POS': false,
+      'Workers scheduler': false,
+      'Users management': false,
+    });
   }
 
   @override
@@ -36,7 +41,7 @@ class User extends Equatable {
           email: snap['user']['email'],
           role: Role.admin,
           id: snap.id,
-          systemAccess: snap['user']['systemAccess'],
+          systemAccess: Map<String, bool>.from(snap['user']['systemAccess']),
         );
         return user;
       case 'user':
@@ -44,7 +49,7 @@ class User extends Equatable {
           email: snap['user']['email'],
           role: Role.user,
           id: snap.id,
-          systemAccess: snap['user']['systemAccess'],
+          systemAccess: Map<String, bool>.from(snap['user']['systemAccess']),
         );
         return user;
 
@@ -59,5 +64,18 @@ class User extends Equatable {
       'role': role.toString().split('.').last,
       'systemAccess': systemAccess,
     };
+  }
+
+  User copyWith({
+    String? email,
+    Role? role,
+    Map<String, bool>? systemAccess,
+  }) {
+    return User(
+      id: this.id,
+      email: email ?? this.email,
+      role: role ?? this.role,
+      systemAccess: systemAccess ?? Map.from(this.systemAccess),
+    );
   }
 }
