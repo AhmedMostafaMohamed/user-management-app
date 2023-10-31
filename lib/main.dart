@@ -8,18 +8,31 @@ import 'package:users_management/data/repositories/user/user_repository.dart';
 import 'package:users_management/domain/blocs/auth/auth_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
 import 'package:users_management/modules/user_details_page/user_details_page.dart';
-import 'firebase_options.dart';
 import 'modules/auth/auth_page.dart';
 import 'modules/home/home_page.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  String jsonString = await getConfigForFirebase();
+  Map configMap = json.decode(jsonString);
+  Map authProjectConfig = configMap['auth_firebase_config'];
 
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: FirebaseOptions(
+        apiKey: authProjectConfig['apiKey'],
+        authDomain: authProjectConfig['authDomain'],
+        projectId: authProjectConfig['projectId'],
+        storageBucket: authProjectConfig['storageBucket'],
+        messagingSenderId: authProjectConfig['messagingSenderId'],
+        appId: authProjectConfig['appId']),
   );
   runApp(const MyApp());
 }
+
+Future<String> getConfigForFirebase() async =>
+    await rootBundle.loadString('assets/config/firebase_config.json');
 
 class MyApp extends StatelessWidget {
   const MyApp({
