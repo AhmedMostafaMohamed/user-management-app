@@ -24,6 +24,7 @@ class User extends Equatable {
       'POS': false,
       'Workers scheduler': false,
       'Users management': false,
+      'Reporting system': false,
     });
   }
 
