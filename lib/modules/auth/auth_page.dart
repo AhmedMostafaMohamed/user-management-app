@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../domain/blocs/auth/auth_bloc.dart';
 
 class AuthPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class AuthPage extends StatelessWidget {
       loginProviders: [
         LoginProvider(
           icon: FontAwesomeIcons.google,
-          label: 'Google',
+          label: AppLocalizations.of(context)!.google,
           callback: () async {
             final userBloc = BlocProvider.of<AuthBloc>(context);
             try {
@@ -39,7 +39,7 @@ class AuthPage extends StatelessWidget {
         ),
       ],
       onLogin: (LoginData data) async {
-        return 'Email not found';
+        return AppLocalizations.of(context)!.emailnotfound;
       },
       onRecoverPassword: (p0) {
         return null;

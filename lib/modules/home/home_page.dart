@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:users_management/domain/blocs/auth/auth_bloc.dart';
+import 'package:users_management/domain/blocs/locale/locale_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
+import 'package:users_management/shared/components/reusable_dropdown.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/models/user.dart' as user_model;
 import 'components/users_list.dart';
@@ -17,10 +20,26 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Users mangement'),
+        title: Text(AppLocalizations.of(context)!.usersmanagement),
         actions: [
+          ReusableDropdownButton(
+            items: const ['English','Arabic',  'German'],
+            value: 'English',
+            onChanged: (value) {
+              late String languageCode;
+              if (value == 'English') {
+                languageCode = 'en';
+              } else if (value == 'Arabic') {
+                languageCode = 'ar';
+              } else if (value == 'German') {
+                languageCode = 'de';
+              }
+              BlocProvider.of<LocaleBloc>(context)
+                  .add(LoadLanguage(locale: Locale(languageCode)));
+            },
+          ),
           IconButton(
-              tooltip: 'Refresh',
+              tooltip: AppLocalizations.of(context)!.refresh,
               onPressed: () {
                 BlocProvider.of<UserBloc>(context).add(FetchUsersEvent());
               },
@@ -32,7 +51,7 @@ class HomePage extends StatelessWidget {
               }
             },
             child: IconButton(
-                tooltip: 'SignOut',
+                tooltip: AppLocalizations.of(context)!.signout,
                 onPressed: () {
                   BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
                 },
@@ -56,28 +75,28 @@ class HomePage extends StatelessWidget {
         listener: (context, state) {
           if (state is UserAddedState) {
             debugPrint('user added!!');
-            var snackBar2 = const SnackBar(
+            var snackBar2 =  SnackBar(
               backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-              content: Text('User is added successfully!'),
+              duration: const Duration(seconds: 2),
+              content: Text(AppLocalizations.of(context)!.useradded),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar2);
             Navigator.of(context).pop();
           } else if (state is UserUpdatedState) {
             debugPrint('user updated!!');
-            var snackBar2 = const SnackBar(
+            var snackBar2 =  SnackBar(
               backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-              content: Text('User is updated successfully!'),
+              duration: const Duration(seconds: 2),
+              content: Text(AppLocalizations.of(context)!.userupdated),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar2);
             Navigator.of(context).pop();
           } else if (state is UserDeletedState) {
             debugPrint('user deleted!!');
-            var snackBar2 = const SnackBar(
+            var snackBar2 =  SnackBar(
               backgroundColor: Colors.red,
-              duration: Duration(seconds: 2),
-              content: Text('User is deleted successfully!'),
+              duration: const  Duration(seconds: 2),
+              content: Text(AppLocalizations.of(context)!.userdeleted),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar2);
             Navigator.of(context).pop();
@@ -93,8 +112,8 @@ class HomePage extends StatelessWidget {
           } else if (state is LoadedState) {
             return UsersList(users: state.users);
           } else {
-            return const Center(
-              child: Text('unknown state'),
+            return Center(
+              child: Text(AppLocalizations.of(context)!.unknownstate),
             );
           }
         },

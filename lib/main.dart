@@ -6,12 +6,14 @@ import 'package:users_management/data/models/user.dart';
 import 'package:users_management/data/repositories/authentication/authentication_repository.dart';
 import 'package:users_management/data/repositories/user/user_repository.dart';
 import 'package:users_management/domain/blocs/auth/auth_bloc.dart';
+import 'package:users_management/domain/blocs/locale/locale_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
 import 'package:users_management/modules/user_details_page/user_details_page.dart';
 import 'modules/auth/auth_page.dart';
 import 'modules/home/home_page.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,30 +51,40 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthBloc(
             authRepository: AuthRepository(googleSignIn: GoogleSignIn()),
           ),
-        )
-      ],
-      child: MaterialApp(
-        title: 'Users mangement',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
         ),
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case '/':
-              return MaterialPageRoute(builder: (context) => const AuthPage());
-            case '/home':
-              return MaterialPageRoute(builder: (context) => const HomePage());
-            case '/user-details':
-              User user = settings.arguments as User;
-              return MaterialPageRoute(
-                  builder: (context) => UserDetailsPage(
-                        user: user,
-                        isAddingNewUser: user.id == '0' ? true : false,
-                      ));
-          }
-          return null;
+        BlocProvider(create: (context) => LocaleBloc()),
+      ],
+      child: BlocBuilder<LocaleBloc, LocaleState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Users mangement',
+            locale: state.locale,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case '/':
+                  return MaterialPageRoute(
+                      builder: (context) => const AuthPage());
+                case '/home':
+                  return MaterialPageRoute(
+                      builder: (context) => const HomePage());
+                case '/user-details':
+                  User user = settings.arguments as User;
+                  return MaterialPageRoute(
+                      builder: (context) => UserDetailsPage(
+                            user: user,
+                            isAddingNewUser: user.id == '0' ? true : false,
+                          ));
+              }
+              return null;
+            },
+          );
         },
       ),
     );

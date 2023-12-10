@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/models/user.dart';
 import '../../shared/components/confirm_dialog.dart';
 
@@ -80,7 +80,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
       builder: (BuildContext context) {
         return ConfirmDialog(
           message:
-              'Are you sure you want to delete this item? This action cannot be undone.',
+              AppLocalizations.of(context)!.alert,
           onConfirm: () {
             // Confirm button pressed
             // Perform actions here
@@ -100,7 +100,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Details'),
+        title: Text(AppLocalizations.of(context)!.userdetails),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -112,13 +112,13 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
               widget.isAddingNewUser
                   ? TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
+                      decoration:  InputDecoration(
+                        labelText: AppLocalizations.of(context)!.email,
                       ),
                       controller: _emailTextEditingController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter an email';
+                          return AppLocalizations.of(context)!.enteremail;
                         }
 
                         return null;
@@ -140,13 +140,13 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                       ),
                     ),
               const SizedBox(height: 16),
-              const Text('Role:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+               Text('${AppLocalizations.of(context)!.role}:',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               Row(
                 children: [
                   Expanded(
                     child: ListTile(
-                      title: const Text('User'),
+                      title:  Text(AppLocalizations.of(context)!.user),
                       leading: Radio<Role>(
                         value: Role.user,
                         groupValue: _selectedRole,
@@ -160,7 +160,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                   ),
                   Expanded(
                     child: ListTile(
-                      title: const Text('Admin'),
+                      title: Text(AppLocalizations.of(context)!.admin),
                       leading: Radio<Role>(
                         value: Role.admin,
                         groupValue: _selectedRole,
@@ -175,8 +175,8 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('System Access:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+               Text('${AppLocalizations.of(context)!.systemaccess}:',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _editedUser.systemAccess.entries.map(
@@ -197,12 +197,12 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 children: [
                   ElevatedButton(
                     onPressed: _saveChanges,
-                    child: const Text('Save Changes'),
+                    child:  Text(AppLocalizations.of(context)!.savechanges),
                   ),
                   if (!widget.isAddingNewUser)
                     ElevatedButton(
                       onPressed: _showConfirmationDialog,
-                      child: const Text('Delete User'),
+                      child: Text(AppLocalizations.of(context)!.deleteuser),
                     ),
                 ],
               ),
