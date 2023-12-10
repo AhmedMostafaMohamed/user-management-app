@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../data/models/user.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UsersList extends StatefulWidget {
   final List<User> users;
@@ -60,8 +61,8 @@ class _UsersListState extends State<UsersList> {
             child: TextField(
               onChanged: filterUsers,
               decoration: InputDecoration(
-                labelText: 'Search',
-                hintText: 'Enter search keyword',
+                labelText: AppLocalizations.of(context)!.search,
+                hintText: AppLocalizations.of(context)!.entersearchkeyword,
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
                 fillColor: Theme.of(context).inputDecorationTheme.fillColor,
@@ -144,7 +145,7 @@ class _UsersListState extends State<UsersList> {
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
                               child: Text(
-                                user.role.name,
+                                mapRoleName(user.role.name),
                                 style: const TextStyle(
                                   fontSize: 16.0,
                                   color: Colors.white,
@@ -166,5 +167,14 @@ class _UsersListState extends State<UsersList> {
         ),
       ],
     );
+  }
+  
+  String mapRoleName(String name) {
+    if(name == 'admin'){
+      return AppLocalizations.of(context)!.admin;
+    }else{
+      return AppLocalizations.of(context)!.user;
+    }
+    
   }
 }
