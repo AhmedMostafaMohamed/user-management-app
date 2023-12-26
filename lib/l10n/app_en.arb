@@ -21,5 +21,7 @@
   "savechanges":"Save Changes",
   "deleteuser":"Delete User",
   "confirm":"Confirm",
-  "cancel":"Cancel"
+  "cancel":"Cancel",
+  "password":"Password",
+  "enterpassword":"Please enter a password"
 }

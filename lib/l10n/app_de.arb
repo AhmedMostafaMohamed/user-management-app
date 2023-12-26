@@ -21,5 +21,7 @@
   "savechanges":"Änderungen speichern",
   "deleteuser":"Benutzer löschen",
   "confirm":"Bestätigen",
-  "cancel":"Stornieren"
+  "cancel":"Stornieren",
+  "password":"Password",
+  "enterpassword":"Please enter a password"
 }

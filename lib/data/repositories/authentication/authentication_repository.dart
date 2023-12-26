@@ -54,7 +54,7 @@ class AuthRepository extends BaseAuthRepository {
   }
 
   @override
-  EitherUser<User> googleSignInUser() async {
+  EitherUser<String> googleSignInUser() async {
     await _googleSignIn.signOut();
 
     if (kIsWeb) {
@@ -66,7 +66,7 @@ class AuthRepository extends BaseAuthRepository {
           bool? accessValue = await checkSystemAccess(
               userCredential.user!.email!, 'Users management');
           if (accessValue == true) {
-            return right(userCredential.user!);
+            return right('signed in successfully');
           } else if (accessValue == false) {
             return left(
                 'the user: ${userCredential.user!.email!} does not have access for this system');
@@ -99,7 +99,7 @@ class AuthRepository extends BaseAuthRepository {
                 userCredential.user!.email!, 'Users management');
 
             if (accessValue == true) {
-              return right(userCredential.user!);
+              return right('signed in successfully');
             } else if (accessValue == false) {
               return left(
                   'the user: ${userCredential.user!.email!} does not have access for this system');
@@ -128,5 +128,11 @@ class AuthRepository extends BaseAuthRepository {
       return left(
           kDebugMode ? e.toString() : 'error occurred, please try again later');
     }
+  }
+  
+  @override
+  EitherUser<String> emailPasswordSignIn(String email, String password) {
+    // TODO: implement emailPasswordSignIn
+    throw UnimplementedError();
   }
 }
