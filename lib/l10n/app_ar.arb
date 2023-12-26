@@ -21,6 +21,8 @@
   "savechanges":"حفظ التغييرات",
   "deleteuser":"مسح المستخدم",
   "confirm":"تأكيد",
-  "cancel":"إلغاء"
+  "cancel":"إلغاء",
+  "password":"كلمة السر",
+  "enterpassword":"برجاء ادخال كلمة السر"
   
 }

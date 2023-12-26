@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.usersmanagement),
         actions: [
           ReusableDropdownButton(
-            items: const ['English','Arabic',  'German'],
+            items: const ['English', 'Arabic', 'German'],
             value: 'English',
             onChanged: (value) {
               late String languageCode;
@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
           BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is Unauthenticated) {
-                Navigator.of(context).pushReplacementNamed('/');
+                Navigator.of(context).pushReplacementNamed('/auth');
               }
             },
             child: IconButton(
@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
         listener: (context, state) {
           if (state is UserAddedState) {
             debugPrint('user added!!');
-            var snackBar2 =  SnackBar(
+            var snackBar2 = SnackBar(
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
               content: Text(AppLocalizations.of(context)!.useradded),
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
             Navigator.of(context).pop();
           } else if (state is UserUpdatedState) {
             debugPrint('user updated!!');
-            var snackBar2 =  SnackBar(
+            var snackBar2 = SnackBar(
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
               content: Text(AppLocalizations.of(context)!.userupdated),
@@ -93,9 +93,9 @@ class HomePage extends StatelessWidget {
             Navigator.of(context).pop();
           } else if (state is UserDeletedState) {
             debugPrint('user deleted!!');
-            var snackBar2 =  SnackBar(
+            var snackBar2 = SnackBar(
               backgroundColor: Colors.red,
-              duration: const  Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
               content: Text(AppLocalizations.of(context)!.userdeleted),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar2);

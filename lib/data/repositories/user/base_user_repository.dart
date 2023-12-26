@@ -5,7 +5,7 @@ typedef EitherUser<T> = Future<Either<String, T>>;
 
 abstract class BaseUserRepository {
   EitherUser<List<User>> getAllUsers();
-  Future<void> addUser(User user);
-  Future<void> deleteUser(String userId);
+  EitherUser<User> addUser(User user);
+  EitherUser<String> deleteUser(String userId);
   EitherUser<User> updateUser(User user);
 }

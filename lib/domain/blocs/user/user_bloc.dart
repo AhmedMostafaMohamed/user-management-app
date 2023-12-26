@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:users_management/data/models/user.dart';
-import 'package:users_management/data/repositories/user/user_repository.dart';
+import 'package:users_management/data/repositories/user/base_user_repository.dart';
+
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final UserRepository _userRepository;
-  UserBloc({required UserRepository userRepository})
+  final BaseUserRepository _userRepository;
+  UserBloc({required BaseUserRepository userRepository})
       : _userRepository = userRepository,
         super(UserInitial()) {
     on<FetchUsersEvent>(_onFetchInvoicesEvent);
