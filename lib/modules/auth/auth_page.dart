@@ -52,9 +52,9 @@ class AuthPage extends StatelessWidget {
               return null;
             }
           }
-        } on FirebaseAuthException catch (e) {
+        }  catch (e) {
           debugPrint('errors: $e');
-          return e.message;
+          return e.toString();
         }
 
         return null;

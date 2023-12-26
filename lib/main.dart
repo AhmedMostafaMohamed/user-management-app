@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            initialRoute: buildInitilRoute(token),
+            initialRoute: buildInitialRoute(token),
             onGenerateRoute: (settings) {
               switch (settings.name) {
                 case '/auth':
@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  String buildInitilRoute(String? token) => token == null
+  String buildInitialRoute(String? token) => token == null
       ? '/auth'
       : !JwtDecoder.isExpired(token)
           ? '/home'
