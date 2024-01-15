@@ -9,7 +9,7 @@
   "userdeleted":"Benutzer wurde erfolgreich gelöscht!",
   "unknownstate":"unbekannter Zustand",
   "search":"Suchen",
-  "entersearchkeyword":"Geben Sie den Suchbegriff ein",
+  "entersearchkeyword":"Suchen Sie nach Name oder Rolle",
   "alert":"Sind Sie sicher, dass Sie dieses Element löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
   "userdetails":"Nutzerdetails",
   "email":"Email",
@@ -23,5 +23,14 @@
   "confirm":"Bestätigen",
   "cancel":"Stornieren",
   "password":"Password",
-  "enterpassword":"Please enter a password"
+  "enterpassword":"Please enter a password",
+  "adminPrivileges":"Administratorrechte",
+  "systemName":"Systemname",
+  "access":"Zugang",
+  "firstname":"Vorname",
+  "lastname":"Familienname, Nachname",
+  "hourRate":"Stundensatz",
+  "enterfirstname":"Bitte geben Sie Ihren Vornamen ein",
+  "enterlastname":"Bitte geben Sie Ihren Nachnamen ein",
+  "entervalidhourrate":"Bitte geben Sie einen gültigen Stundensatz ein"
 }

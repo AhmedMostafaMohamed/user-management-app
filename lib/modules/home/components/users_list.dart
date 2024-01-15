@@ -29,7 +29,8 @@ class _UsersListState extends State<UsersList> {
         filteredUsers = widget.users
             .where((user) =>
                 user.email.toLowerCase().contains(searchTerm.toLowerCase()) ||
-                user.role.name.toLowerCase().contains(searchTerm.toLowerCase()))
+                user.role.name.toLowerCase().contains(searchTerm.toLowerCase())||
+                '${user.firstName} ${user.lastName}'.toLowerCase().contains(searchTerm.toLowerCase()))
             .toList();
       }
     });
@@ -128,7 +129,7 @@ class _UsersListState extends State<UsersList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user.email,
+                              '${user.firstName} ${user.lastName}',
                               style: const TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold,

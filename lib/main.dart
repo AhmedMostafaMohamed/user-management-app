@@ -21,8 +21,8 @@ void main() async {
   String jsonString = await getConfigForFirebase();
   Map configMap = json.decode(jsonString);
   Map authProjectConfig = configMap['auth_firebase_config'];
-
-  await Firebase.initializeApp(
+  
+    await Firebase.initializeApp(
     options: FirebaseOptions(
         apiKey: authProjectConfig['apiKey'],
         authDomain: authProjectConfig['authDomain'],
@@ -31,6 +31,10 @@ void main() async {
         messagingSenderId: authProjectConfig['messagingSenderId'],
         appId: authProjectConfig['appId']),
   );
+
+  
+
+  
   final String? token = await const FlutterSecureStorage().read(key: 'token');
   runApp(MyApp(
     token: token,
@@ -92,7 +96,7 @@ class MyApp extends StatelessWidget {
               }
               return null;
             },
-            // home: buildHomeScreen(token),
+            
           );
         },
       ),

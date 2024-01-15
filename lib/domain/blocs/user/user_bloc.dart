@@ -29,7 +29,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           (errorMessage) => emit(ErrorState(errorMessage: errorMessage)),
           (users) => emit(LoadedState(users: users)));
     } catch (e) {
-      emit(ErrorState(errorMessage: 'Error fetching users: $e'));
+      emit(ErrorState(errorMessage: '$e'));
     }
   }
 
@@ -37,13 +37,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       AddUserEvent event, Emitter<UserState> emit) async {
     try {
       emit(LoadingState());
-      final response = await _userRepository.addUser(event.user);
+      final response = await _userRepository.addUser(event.user, event.password);
       response.fold(
           (errorMessage) => emit(ErrorState(errorMessage: errorMessage)),
           (user) => emit(UserAddedState()));
       add(FetchUsersEvent());
     } catch (e) {
-      emit(ErrorState(errorMessage: 'Error adding user: $e'));
+      emit(ErrorState(errorMessage: '$e'));
     }
   }
 
@@ -58,7 +58,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           (user) => emit(UserUpdatedState()));
       add(FetchUsersEvent());
     } catch (e) {
-      emit(ErrorState(errorMessage: 'Error updating user: $e'));
+      emit(ErrorState(errorMessage: '$e'));
     }
   }
 
@@ -72,7 +72,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           (user) => emit(UserDeletedState()));
       add(FetchUsersEvent());
     } catch (e) {
-      emit(ErrorState(errorMessage: 'Error delteing user: $e'));
+      emit(ErrorState(errorMessage: '$e'));
     }
   }
 }

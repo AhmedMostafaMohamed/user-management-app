@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class OfflineUserRepository implements BaseUserRepository {
   final String apiUrl = 'http://localhost:3001/users';
   @override
-  EitherUser<User> addUser(User user) async {
+  EitherUser<User> addUser(User user, String? password) async {
     try {
       const storage = FlutterSecureStorage();
       final String? jwtToken = await storage.read(key: 'token');
@@ -20,7 +20,7 @@ class OfflineUserRepository implements BaseUserRepository {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken',
         },
-        body: jsonEncode(user.toMap()),
+        body: jsonEncode({'user':user.toMap(), 'password':password}),
       );
       if (response.statusCode == 200) {
         return right(user); // No error
@@ -69,8 +69,8 @@ class OfflineUserRepository implements BaseUserRepository {
 
       return right(users);
     } else {
-      // Handle errors
-      return left('error fetching users');
+      return left(
+            'Unauthorized: Token may be expired or invalid');
     }
   }
 

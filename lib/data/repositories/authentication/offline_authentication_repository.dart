@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class OfflineAuthenticationRepository implements BaseAuthRepository {
   final FlutterSecureStorage secureStorage;
-  final String apiUrl = 'http://localhost:3000/auth';
+  final String apiUrl = 'http://localhost:3005/auth';
 
   OfflineAuthenticationRepository({required this.secureStorage});
 
