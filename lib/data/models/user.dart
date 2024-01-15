@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:equatable/equatable.dart';
 
 enum Role {
@@ -8,83 +8,88 @@ enum Role {
 
 class User extends Equatable {
   final String id;
+  final String firstName;
+  final String lastName;
+  final num hourRate;
   final String email;
-  final String password;
   final Role role;
   final Map<String, bool> systemAccess;
 
   const User({
+    required this.hourRate,
     required this.email,
     required this.role,
+    required this.firstName,
+    required this.lastName,
     required this.systemAccess,
-    required this.password,
     this.id = '0',
   });
   factory User.empty() {
-    return const User(email: '', password: '', role: Role.user, systemAccess: {
-      'Expense management': false,
-      'POS': false,
-      'Workers scheduler': false,
-      'Users management': false,
-      'Reporting system': false,
-    });
+    return const User(
+        hourRate: 0,
+        email: '',
+        firstName: '',
+        lastName: '',
+        role: Role.user,
+        systemAccess: {
+          'Expense management': false,
+          'POS': false,
+          'Workers scheduler': false,
+          'Users management': false,
+          'Reporting system': false,
+        });
   }
 
   @override
   List<Object?> get props => [
         id,
         email,
-        password,
         role,
         systemAccess,
+        firstName,
+        lastName,
+        hourRate,
       ];
-  static User fromSnapshot(DocumentSnapshot snap) {
-    switch (snap['user']['role']) {
-      case 'admin':
-        User user = User(
-          email: snap['user']['email'],
-          role: Role.admin,
-          id: snap.id,
-          systemAccess: Map<String, bool>.from(snap['user']['systemAccess']),
-          password: snap['user']['password'],
-        );
-        return user;
-      case 'user':
-        User user = User(
-          email: snap['user']['email'],
-          role: Role.user,
-          id: snap.id,
-          systemAccess: Map<String, bool>.from(snap['user']['systemAccess']),
-          password: snap['user']['password'],
-        );
-        return user;
-
-      default:
-        throw ArgumentError('Invalid role value: ${snap['user']['role']}');
-    }
+  static User fromSnapshot( snap) {
+    return User(
+      hourRate: snap['user']['hourRate'],
+      firstName: snap['user']['firstName'],
+      lastName: snap['user']['lastName'],
+      email: snap['user']['email'],
+      role: snap['user']['role'] == 'admin' ? Role.admin : Role.user,
+      id: snap.id,
+      systemAccess: Map<String, bool>.from(snap['user']['systemAccess']),
+    );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
       'role': role.toString().split('.').last,
       'systemAccess': systemAccess,
-      'password': password,
+      'hourRate': hourRate,
     };
   }
 
   User copyWith({
     String? email,
     Role? role,
+    String? firstName,
+    String? lastName,
     Map<String, bool>? systemAccess,
-    String? password,
+    num? hourRate,
   }) {
+   
     return User(
       id: id,
       email: email ?? this.email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
       role: role ?? this.role,
       systemAccess: systemAccess ?? Map.from(this.systemAccess),
-      password: password ?? this.password,
+      hourRate: hourRate ?? this.hourRate,
     );
   }
 
@@ -92,8 +97,10 @@ class User extends Equatable {
     return User(
         email: json['email'],
         id: json['_id'],
-        password: json['password'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
         role: json['role'] == 'admin' ? Role.admin : Role.user,
-        systemAccess: Map<String, bool>.from(json['systemAccess']));
+        systemAccess: Map<String, bool>.from(json['systemAccess']),
+        hourRate: json['hourRate']);
   }
 }

@@ -21,5 +21,6 @@ class DeleteUserEvent extends UserEvent {
 
 class AddUserEvent extends UserEvent {
   final User user;
-  const AddUserEvent({required this.user});
+  final String password;
+  const AddUserEvent({required this.user, required this.password});
 }

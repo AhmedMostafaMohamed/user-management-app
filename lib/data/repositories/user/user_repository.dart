@@ -11,7 +11,7 @@ class UserRepository extends BaseUserRepository {
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  EitherUser<User> addUser(User user) async {
+  EitherUser<User> addUser(User user, String? password) async {
     try {
       await _firebaseFirestore.collection('users').add({'user': user.toMap()});
       return right(user);

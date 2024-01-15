@@ -9,7 +9,7 @@
   "userdeleted":"تم حذف المستخدم بنجاح!",
   "unknownstate":"حالة غير معروفة",
   "search":"بحث",
-  "entersearchkeyword":"أدخل كلمة البحث",
+  "entersearchkeyword":"ابحث حسب الاسم أو الدور",
   "alert":"هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
   "userdetails":"بيانات المستخدم",
   "email":"بريد إلكتروني",
@@ -23,6 +23,15 @@
   "confirm":"تأكيد",
   "cancel":"إلغاء",
   "password":"كلمة السر",
-  "enterpassword":"برجاء ادخال كلمة السر"
+  "enterpassword":"برجاء ادخال كلمة السر",
+  "adminPrivileges":"أمتيازات المسؤول",
+  "systemName":"اسم النظام",
+  "access":"وصول",
+  "firstname":"الاسم الأول",
+  "lastname":"اسم العائلة",
+  "hourRate":"المعدل بالساعة",
+  "enterfirstname":"الرجاء إدخال الاسم الأول",
+  "enterlastname":"الرجاء إدخال الاسم الأخير",
+  "entervalidhourrate":"الرجاء إدخال معدل صالح للساعة"
   
 }
