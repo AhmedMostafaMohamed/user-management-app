@@ -50,6 +50,8 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   http: ^1.1.0
   jwt_decoder: ^2.0.1
+  authentication_module:
+    path: D:/projects/authentication-package/authentication_module
 
 dev_dependencies:
   flutter_test:

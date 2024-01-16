@@ -1,20 +1,20 @@
+import 'package:authentication_module/data/repositories/authentication/offline_authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:users_management/data/models/user.dart';
-import 'package:users_management/data/repositories/authentication/offline_authentication_repository.dart';
 import 'package:users_management/data/repositories/user/offline_user_repository.dart';
-import 'package:users_management/domain/blocs/auth/auth_bloc.dart';
 import 'package:users_management/domain/blocs/locale/locale_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
 import 'package:users_management/modules/user_details_page/user_details_page.dart';
-import 'modules/auth/auth_page.dart';
 import 'modules/home/home_page.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:authentication_module/modules/auth/auth_page.dart';
+import 'package:authentication_module/domain/blocs/auth/auth_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthBloc(
             authRepository: OfflineAuthenticationRepository(
+              systemName: 'Users management',
                 secureStorage: const FlutterSecureStorage()),
           ),
         ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:users_management/domain/blocs/auth/auth_bloc.dart';
+
 import 'package:users_management/domain/blocs/locale/locale_bloc.dart';
 import 'package:users_management/domain/blocs/user/user_bloc.dart';
 import 'package:users_management/shared/components/reusable_dropdown.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:authentication_module/domain/blocs/auth/auth_bloc.dart';
 import '../../data/models/user.dart' as user_model;
 import 'components/users_list.dart';
 
@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -56,14 +55,9 @@ class HomePage extends StatelessWidget {
                 icon: const Icon(Icons.power_settings_new_outlined)),
           ),
           const Padding(
-            padding:  EdgeInsets.all(8.0),
-            child: CircleAvatar(
-             
-              radius: 20,
-              child:  Icon(Icons.person,
-                      size: 20) 
-                  
-            ),
+            padding: EdgeInsets.all(8.0),
+            child:
+                CircleAvatar(radius: 20, child: Icon(Icons.person, size: 20)),
           )
         ],
       ),
@@ -97,15 +91,14 @@ class HomePage extends StatelessWidget {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar2);
             Navigator.of(context).pop();
-          }else if(state is ErrorState){
-                        debugPrint(state.errorMessage);
+          } else if (state is ErrorState) {
+            debugPrint(state.errorMessage);
             var snackBar2 = SnackBar(
               backgroundColor: Colors.red,
               duration: const Duration(seconds: 2),
               content: Text(state.errorMessage),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar2);
-
           }
         },
         builder: (context, state) {
@@ -128,7 +121,6 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             Navigator.of(context)
                 .pushNamed('/user-details', arguments: user_model.User.empty());
-           
           },
           child: const Icon(Icons.add)),
     );
